@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hausdorff Middle - Computational Geometry</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<nav class="navbar">
+    <a href="index.html" >Home</a>
+    <a href="minkowski.html">Minkowski Sum</a>
+    <a href="hausdorff_middle.html" class="active">Hausdorff Middle</a>
+</nav>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hausdorff Middle Demo</h1>
+            <p class="subtitle">Computational Geometry - Shape Interpolation</p>
+        </header>
+
+        <div class="theory-box">
+            <h3>🎯 Theoretical Concept</h3>
+            <p>Given two sets A and B with a Hausdorff distance of 1, there always exists a set S<sub>α</sub> such that:</p>
+            <div class="formula">
+                S<sub>α</sub> = (A ⊕ D<sub>α</sub>) ∩ (B ⊕ D<sub>1-α</sub>)
+            </div>
+            <p>where D<sub>r</sub> is a disk of radius r and ⊕ is the Minkowski sum. For α = 0.5, we obtain the "Hausdorff middle" at distance 0.5 from A and B.</p>
+        </div>
+
+        <div class="main-content">
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="info-section">
+                    <h4>💡 Instructions</h4>
+                    <ol>
+                        <li>Select Shape A and place it</li>
+                        <li>Select Shape B and place it close</li>
+                        <li>Click "Compute S<sub>α</sub>" to see the interpolation</li>
+                        <li>Adjust α to see different interpolations</li>
+                    </ol>
+                </div>
+                <h3>🎮 Controls</h3>
+                
+                <div class="mode-buttons">
+                    <button class="mode-btn active" id="mode-a">Shape A</button>
+                    <button class="mode-btn" id="mode-b">Shape B</button>
+                </div>
+
+                <div class="shape-selector">
+                    <h4>Choose a shape:</h4>
+                    <div class="shape-buttons">
+                        <button class="shape-btn" data-shape="circle">🔵 Circle</button>
+                        <button class="shape-btn" data-shape="square">⬜ Square</button>
+                        <button class="shape-btn" data-shape="triangle">🔺 Triangle</button>
+                        <button class="shape-btn" data-shape="diamond">💎 Diamond</button>
+                        <button class="shape-btn" data-shape="rectangle">📐 Rectangle</button>
+                        <button class="shape-btn" data-shape="hexagon">⬡ Hexagon</button>
+                    </div>
+                    <h4>Click on the screen to draw the shape</h4>
+                    
+                    <!-- <div class="position-controls">
+                        <input type="number" class="position-input" id="pos-x" placeholder="X" value="200">
+                        <input type="number" class="position-input" id="pos-y" placeholder="Y" value="200">
+                    </div>
+                    <small>Position (X, Y) to place the shape</small> -->
+                </div>
+
+                <button class="action-btn" id="compute-middle">Compute S<sub>α</sub></button>
+                <button class="action-btn clear-btn" id="clear-all">Clear All</button>
+
+                <div class="alpha-control">
+                    <h4>Parameter α</h4>
+                    <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="0.5">
+                    <div class="alpha-value" id="alpha-value">α = 0.50</div>
+                    <small>α = 0.5 gives the Hausdorff middle</small>
+                </div>
+
+                <div class="legend">
+                    <h4>Legend</h4>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 0, 0, 0.3);"></div>
+                        <span>Shape A</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(0, 0, 255, 0.3);"></div>
+                        <span>Shape B</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(0, 255, 0, 0.4);"></div>
+                        <span>S<sub>α</sub> (Interpolation)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 0, 0, 0.1); border-style: dashed;"></div>
+                        <span>A ⊕ D<sub>α</sub></span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(0, 0, 255, 0.1); border-style: dashed;"></div>
+                        <span>B ⊕ D<sub>1-α</sub></span>
+                    </div>
+
+                </div>
+
+                
+
+                <div class="info-section">
+                    <h4>🔬 Properties</h4>
+                    <ul>
+                        <li><strong>α = 0</strong>: S<sub>α</sub> = A</li>
+                        <li><strong>α = 1</strong>: S<sub>α</sub> = B</li>
+                        <li><strong>α = 0.5</strong>: Hausdorff middle</li>
+                        <li>Continuous distance between shapes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    
+</body>
+</html>

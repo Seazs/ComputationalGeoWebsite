@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minkowski Sum - Computational Geometry</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="minkowski.html" class="active">Minkowski Sum</a>
+    <a href="hausdorff_middle.html">Hausdorff Middle</a>
+</nav>
+<body>
+    <div class="container">
+        <header>
+            <h1>Minkowski Sum Demo</h1>
+            <p class="subtitle">Computational Geometry - Minkowski Sum of Shapes</p>
+        </header>
+        <div class="theory-box">
+            <h3>🎯 Theoretical Concept</h3>
+            <p>The minkowski sum of sets A and B is defined as 
+                . 
+            <div class="formula">
+                A⊕︎B={a + b | a ∈ A, b ∈ B}            </div>
+            <p>This looks like this:</p>
+            <div class="theory-image">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <img src="images/minkowski_exemple.png" alt="Minkowski Sum Example" style="max-width: 100%; width: 450px; height: auto; display: block;">
+                </div>
+            </div>
+            <p>Intuitively, The Minkowski sum can be seen as running a shape along another, and the "trace" left behind is the resulting set (but it's a very simplified view and the terms are not exact).</p>
+        </div>
+        <header>
+            <h1> Demo </h1>
+        </header>
+        <div class="main-content">
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+            <div class="controls">
+                <div class="info-section">
+                    <h4>💡 Instructions</h4>
+                    <ol>
+                        <li>Select "Shape A"</li>
+                        <li>Select "Shape B"</li>
+                        <li>Click on "Compute Minkowski Sum"</li>
+                    </ol>
+                </div>
+                <h3>🎮 Controls</h3>
+                <div class="mode-buttons">
+                    <button class="mode-btn active" id="mode-a">Shape A</button>
+                    <button class="mode-btn" id="mode-b">Shape B</button>
+                </div>
+                <div class="shape-selector">
+                    <h4>Choose a shape:</h4>
+                    <div class="shape-buttons">
+                        <button class="shape-btn" data-shape="circle">🔵 Circle</button>
+                        <button class="shape-btn" data-shape="square">⬜ Square</button>
+                        <button class="shape-btn" data-shape="triangle">🔺 Triangle</button>
+                        <button class="shape-btn" data-shape="diamond">💎 Diamond</button>
+                        <button class="shape-btn" data-shape="rectangle">📐 Rectangle</button>
+                        <button class="shape-btn" data-shape="hexagon">⬡ Hexagon</button>
+                    </div>
+                    <h4>Click on the screen to draw the shape</h4>
+                </div>
+                <button class="action-btn" id="compute-minkowski">Compute Minkowski Sum</button>
+                <button class="action-btn clear-btn" id="clear-all">Clear All</button>
+                <div class="legend">
+                    <h4>Legend</h4>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 0, 0, 0.3);"></div>
+                        <span>Shape A</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(0, 0, 255, 0.3);"></div>
+                        <span>Shape B</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 165, 0, 0.4);"></div>
+                        <span>Minkowski Sum</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/minkowski.js"></script>
+</body>
+</html>
