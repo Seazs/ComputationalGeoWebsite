@@ -30,6 +30,9 @@
             background: rgba(255,255,255,0.18);
             color: #ffd700;
         }
+        html {
+            overflow-y: scroll; /* Always show vertical scrollbar */
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -241,6 +244,41 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             text-align: center;
+        }
+
+        .github-link {
+            position: absolute;
+            top: 18px;
+            right: 32px;
+            z-index: 10;
+        }
+        .github-link a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-weight: bold;
+            color: #222;
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 6px 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: background 0.2s;
+        }
+        .github-link a:hover {
+            background: #e0e0e0;
+        }
+        .github-link svg {
+            margin-right: 8px;
+            height: 20px;
+            width: 20px;
+            fill: #222;
+        }
+        @media (max-width: 600px) {
+            .github-link {
+                position: static;
+                margin: 12px 0 0 0;
+                text-align: right;
+            }
         }
 
         @media (max-width: 1200px) {

@@ -10,7 +10,16 @@
     <a href="index.html" >Home</a>
     <a href="minkowski.html">Minkowski Sum</a>
     <a href="hausdorff_middle.html" class="active">Hausdorff Middle</a>
+    <a href="references.html">References</a>
 </nav>
+<div class="github-link">
+    <a href="https://github.com/Seazs/ComputationalGeoWebsite" target="_blank" title="GitHub Repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.484 2 12.012c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.089 2.91.833.091-.646.35-1.09.636-1.342-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.254-.446-1.274.098-2.656 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.025 2.747-1.025.546 1.382.202 2.402.1 2.656.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .268.18.579.688.481C19.138 20.19 22 16.437 22 12.012 22 6.484 17.523 2 12 2z"/>
+        </svg>
+        GitHub
+    </a>
+</div>
 <body>
     <div class="container">
         <header>
@@ -20,11 +29,18 @@
 
         <div class="theory-box">
             <h3>🎯 Theoretical Concept</h3>
-            <p>Given two sets A and B with a Hausdorff distance of 1, there always exists a set S<sub>α</sub> such that:</p>
+            <p>
+                The <strong>Hausdorff middle</strong> is a geometric construction that provides a continuous interpolation between two shapes, A and B, based on the Hausdorff distance. Originating from shape analysis and computational geometry, this concept is useful for applications such as morphing, blending, and measuring similarity between objects. By leveraging the Minkowski sum and intersection operations, the Hausdorff middle generates intermediate shapes that are equidistant from both A and B, offering a natural way to transition between them.
+            </p>
+            <p>
+                Given two sets A and B with a Hausdorff distance of 1, there always exists a set S<sub>α</sub> such that:
+            </p>
             <div class="formula">
                 S<sub>α</sub> = (A ⊕ D<sub>α</sub>) ∩ (B ⊕ D<sub>1-α</sub>)
             </div>
-            <p>where D<sub>r</sub> is a disk of radius r and ⊕ is the Minkowski sum. For α = 0.5, we obtain the "Hausdorff middle" at distance 0.5 from A and B.</p>
+            <p>
+                where D<sub>r</sub> is a disk of radius r and ⊕ is the Minkowski sum. For α = 0.5, we obtain the "Hausdorff middle" at distance 0.5 from A and B. This construction ensures that S<sub>α</sub> smoothly interpolates between A (when α = 0) and B (when α = 1), making it a powerful tool for shape interpolation and comparison.
+            </p>
         </div>
 
         <header>
