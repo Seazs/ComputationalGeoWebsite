@@ -6,6 +6,8 @@ class HausdorffMiddleThreeShapesDemo {
         this.shapeA = null;
         this.shapeB = null;
         this.shapeC = null;
+        this.previousMode = null;
+        this.freeformPoints = [];
         this.alpha = 0.5;
         this.showMiddle = false;
         this.selectedShapeType = null;
@@ -43,17 +45,37 @@ class HausdorffMiddleThreeShapesDemo {
             });
         });
 
-        // Canvas click to place shape
-        this.canvas.addEventListener('click', (e) => {
-            if (!this.selectedShapeType) {
-                alert('Veuillez d\'abord choisir une forme !');
-                return;
-            }
-            const rect = this.canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            this.addShape(this.selectedShapeType, x, y);
-        });
+        //Canvas click to place shape
+            this.canvas.addEventListener('click', (e) => {
+                if (!this.selectedShapeType) {
+                    alert('Veuillez d\'abord choisir une forme !');
+                    return;
+                }
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                if (this.selectedShapeType === 'freeform') {
+                    if (this.mode != this.previousMode) {
+                        this.freeformPoints = [];
+                        this.previousMode = this.mode;
+                    }
+                        this.freeformPoints.push({x, y}); 
+                        const shape = {
+                            type: 'freeform',
+                            points: [...this.freeformPoints],
+                            center: this.freeformPoints[0]
+                        };
+                        if (this.mode === 'A') {this.shapeA = shape;}
+                        else if(this.mode === 'B') {this.shapeB = shape;}
+                        else if(this.mode === 'C') {this.shapeC = shape;}
+                        this.showMiddle = false;
+                        this.render();
+                }
+                else {this.addShape(this.selectedShapeType, x, y);}
+                
+                // this.selectedShapeType = null; // Reset after placing
+            });
 
         // Control buttons
         document.getElementById('compute-middle').addEventListener('click', () => {
@@ -177,6 +199,7 @@ class HausdorffMiddleThreeShapesDemo {
         this.shapeB = null;
         this.shapeC = null;
         this.showMiddle = false;
+        this.freeformPoints = [];
         
         const btn = document.getElementById('compute-middle');
         btn.innerHTML = 'Calculer T<sub>α</sub>';
@@ -352,7 +375,7 @@ class HausdorffMiddleThreeShapesDemo {
         for (let i = 1; i < points.length; i++) {
             this.ctx.lineTo(points[i].x, points[i].y);
         }
-        
+        this.ctx.setLineDash([]);
         this.ctx.closePath();
         this.ctx.fillStyle = fillColor;
         this.ctx.fill();
@@ -362,72 +385,83 @@ class HausdorffMiddleThreeShapesDemo {
     }
 
     drawDilatedShape(points, radius, fillColor, strokeColor, dashed = false) {
-        if (points.length < 2 || radius <= 0) return;
         
-        this.ctx.save();
+        const dilatedPoints = this.computeMinkowskiSum(points, this.createCirclePoints(radius));
+        
+        this.ctx.beginPath();
+        this.ctx.moveTo(dilatedPoints[0].x, dilatedPoints[0].y);
+        
+        for (let i = 1; i < dilatedPoints.length; i++) {
+            this.ctx.lineTo(dilatedPoints[i].x, dilatedPoints[i].y);
+        }
+        
+        this.ctx.closePath();
+        this.ctx.fillStyle = fillColor;
+        this.ctx.fill();
         
         if (dashed) {
-            this.ctx.setLineDash([8, 4]);
+            this.ctx.setLineDash([5, 5]);
+        } else {
+            this.ctx.setLineDash([]);
         }
         
-        this.ctx.fillStyle = fillColor;
         this.ctx.strokeStyle = strokeColor;
         this.ctx.lineWidth = 2;
+        this.ctx.stroke();
         
-        // Create the outer boundary using Minkowski sum with disk
-        this.ctx.beginPath();
-        
-        const outerPoints = [];
-        for (let i = 0; i < points.length; i++) {
-            const curr = points[i];
-            const next = points[(i + 1) % points.length];
-            const prev = points[(i - 1 + points.length) % points.length];
-            
-            // Calculate the outward normal at this vertex
-            const v1 = this.normalize({x: curr.x - prev.x, y: curr.y - prev.y});
-            const v2 = this.normalize({x: next.x - curr.x, y: next.y - curr.y});
-            
-            const normal1 = {x: -v1.y, y: v1.x};
-            const normal2 = {x: -v2.y, y: v2.x};
-            
-            // Average normal (bisector)
-            let avgNormal = {
-                x: (normal1.x + normal2.x) * 0.5,
-                y: (normal1.y + normal2.y) * 0.5
-            };
-            
-            const len = Math.sqrt(avgNormal.x * avgNormal.x + avgNormal.y * avgNormal.y);
-            if (len > 0) {
-                avgNormal.x /= len;
-                avgNormal.y /= len;
-            }
-            
-            // Calculate the distance to move outward
-            const cosHalfAngle = Math.max(0.1, Math.sqrt((1 + v1.x * v2.x + v1.y * v2.y) * 0.5));
-            const offset = radius / cosHalfAngle;
-            
-            outerPoints.push({
-                x: curr.x + avgNormal.x * offset,
-                y: curr.y + avgNormal.y * offset
+    }
+
+    createCirclePoints(radius, numPoints = 32) {
+        const points = [];
+        for (let i = 0; i < numPoints; i++) {
+            const angle = (i / numPoints) * 2 * Math.PI;
+            points.push({
+                x: Math.cos(angle) * radius,
+                y: Math.sin(angle) * radius
             });
         }
-        
-        // Draw the outer boundary
-        if (outerPoints.length > 0) {
-            this.ctx.moveTo(outerPoints[0].x, outerPoints[0].y);
-            for (let i = 1; i < outerPoints.length; i++) {
-                this.ctx.lineTo(outerPoints[i].x, outerPoints[i].y);
+        return points;
+    }
+
+    computeMinkowskiSum(pointsA, pointsB) {
+        const sumPoints = [];
+
+        for (let a of pointsA) {
+            for (let b of pointsB) {
+                sumPoints.push({
+                    x: a.x + b.x,
+                    y: a.y + b.y
+                });
             }
-            this.ctx.closePath();
-            this.ctx.fill();
-            this.ctx.stroke();
         }
-        
-        this.ctx.restore();
+
+        return this.calculateBoundary(sumPoints);
     }
 
     isPointInDilatedShape(point, shapePoints, radius) {
+        // First check: is point inside the original polygon?
+        if (this.isPointInPolygon(point, shapePoints)) {
+            return true;
+        }
+
+        // Second check: is point within 'radius' of the polygon’s edges or vertices?
         return this.distanceToShape(point, shapePoints) <= radius;
+    }
+
+    isPointInPolygon(point, shapePoints) {
+        let x = point.x, y = point.y;
+        let inside = false;
+
+        for (let i = 0, j = shapePoints.length - 1; i < shapePoints.length; j = i++) {
+            let xi = shapePoints[i].x, yi = shapePoints[i].y;
+            let xj = shapePoints[j].x, yj = shapePoints[j].y;
+
+            let intersect = ((yi > y) !== (yj > y)) &&
+                            (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+
+        return inside;
     }
 
     distanceToShape(point, shapePoints) {
@@ -471,35 +505,39 @@ class HausdorffMiddleThreeShapesDemo {
         return this.distance(point, closestPoint);
     }
 
-    calculateBoundary(points) {
-        if (points.length < 3) return points;
-        
-        // Simple convex hull using gift wrapping
-        const hull = [];
-        let leftmost = 0;
-        
-        for (let i = 1; i < points.length; i++) {
-            if (points[i].x < points[leftmost].x) {
-                leftmost = i;
+    calculateBoundary(points) { // using the graham scan algorithm
+        if (points.length < 3) return points.slice();
+
+        // Step 1: Find the point with the lowest y-coordinate (break ties by x)
+        const lowest = points.reduce((res, pt) => {
+            if (pt.y < res.y || (pt.y === res.y && pt.x < res.x)) return pt;
+            return res;
+        });
+
+        // Step 2: Sort points by polar angle with the lowest point
+        const sorted = points.slice().sort((a, b) => {
+            const cp = this.crossProduct(lowest, a, b);
+            if (cp === 0) {
+                const da = (a.x - lowest.x) ** 2 + (a.y - lowest.y) ** 2;
+                const db = (b.x - lowest.x) ** 2 + (b.y - lowest.y) ** 2;
+                return da - db;
             }
+            return -cp;
+        });
+
+        // Step 3: Build the convex hull using a stack
+        const stack = [];
+        for (let pt of sorted) {
+            while (stack.length >= 2 &&
+                this.crossProduct(stack[stack.length - 2], stack[stack.length - 1], pt) <= 0) {
+                stack.pop();
+            }
+            stack.push(pt);
         }
-        
-        let current = leftmost;
-        do {
-            hull.push(points[current]);
-            let next = 0;
-            
-            for (let i = 1; i < points.length; i++) {
-                if (next === current || this.crossProduct(points[current], points[i], points[next]) > 0) {
-                    next = i;
-                }
-            }
-            
-            current = next;
-        } while (current !== leftmost && hull.length < points.length);
-        
-        return hull;
+
+        return stack;
     }
+
 
     crossProduct(p1, p2, p3) {
         return (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
