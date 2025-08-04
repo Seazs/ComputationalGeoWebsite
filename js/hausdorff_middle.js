@@ -263,7 +263,7 @@
                 for (let i = 1; i < points.length; i++) {
                     this.ctx.lineTo(points[i].x, points[i].y);
                 }
-                
+                this.ctx.setLineDash([]);
                 this.ctx.closePath();
                 this.ctx.fillStyle = fillColor;
                 this.ctx.fill();
@@ -348,6 +348,15 @@
                 this.ctx.fillStyle = 'rgba(0, 255, 0, 0.82)';
                 for (let point of intersectionPoints) {
                     this.ctx.fillRect(point.x - 1, point.y - 1, 3, 3);
+                }
+                // Draw the boundary of the intersection
+                if (intersectionPoints.length > 0) {
+                    const boundary = this.calculateBoundary(intersectionPoints);
+                    this.drawShape(boundary, 'rgba(0, 255, 0, 0.3)', '#00ff00', 2);
+                    
+                    // Draw centroid
+                    const centroid = this.calculateCentroid(boundary);
+                    this.drawLabel(centroid, 'S_α', '#00ff00');
                 }
             }
 
