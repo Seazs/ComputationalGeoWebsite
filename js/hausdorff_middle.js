@@ -3,6 +3,8 @@
                 this.canvas = document.getElementById('canvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.mode = 'A';
+                this.previousMode = null;
+                this.freeformPoints = [];
                 this.shapeA = null;
                 this.shapeB = null;
                 this.alpha = 0.5;
@@ -45,7 +47,25 @@
                     const rect = this.canvas.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    this.addShape(this.selectedShapeType, x, y);
+
+                    if (this.selectedShapeType === 'freeform') {
+                        if (this.mode != this.previousMode) {
+                            this.freeformPoints = [];
+                            this.previousMode = this.mode;
+                        }
+                            this.freeformPoints.push({x, y}); 
+                            const shape = {
+                                type: 'freeform',
+                                points: [...this.freeformPoints],
+                                center: this.freeformPoints[0]
+                            };
+                            if (this.mode === 'A') {this.shapeA = shape;}
+                            else                   {this.shapeB = shape;}
+                            this.showMiddle = false;
+                            this.render();
+                    }
+                    else {this.addShape(this.selectedShapeType, x, y);}
+                    
                     // this.selectedShapeType = null; // Reset after placing
                 });
 
@@ -71,7 +91,6 @@
 
             addShape(shapeType, x, y) {
                 const shape = this.createShape(shapeType, x, y);
-                
                 if (this.mode === 'A') {
                     this.shapeA = shape;
                 } else {
@@ -169,6 +188,7 @@
                 this.shapeA = null;
                 this.shapeB = null;
                 this.showMiddle = false;
+                this.freeformPoints = [];
                 
                 const btn = document.getElementById('compute-middle');
                 btn.textContent = 'Calculer S_α';
