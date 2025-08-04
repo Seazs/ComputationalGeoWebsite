@@ -3,8 +3,8 @@
                 this.canvas = document.getElementById('canvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.mode = 'A';
-                this.previousMode = null;
                 this.freeformPoints = [];
+                this.previousMode = null;
                 this.shapeA = null;
                 this.shapeB = null;
                 this.alpha = 0.5;
