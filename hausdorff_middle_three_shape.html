@@ -9,8 +9,8 @@
 <nav class="navbar">
     <a href="index.html" >Home</a>
     <a href="minkowski.html">Minkowski Sum</a>
-    <a href="hausdorff_middle.html" class="active">Hausdorff Middle</a>
-    <a href="hausdorff_middle_three_shape.html">Hausdorff Middle for 3 shape</a>
+    <a href="hausdorff_middle.html" ">Hausdorff Middle</a>
+    <a href="hausdorff_middle_three_shape.html" class="active">Hausdorff Middle for 3 shape</a>
     <a href="references.html">References</a>
 </nav>
 <div class="github-link">
@@ -25,27 +25,24 @@
     <div class="container">
         <header>
             <h1>Hausdorff Middle Demo</h1>
-            <p class="subtitle">Computational Geometry - Shape Interpolation</p>
+            <p class="subtitle">Computational Geometry - 3 Shapes Middle</p>
         </header>
 
         <div class="theory-box">
             <h3>🎯 Theoretical Concept</h3>
             <p>
-                The <strong>Hausdorff middle</strong> is a geometric construction that provides a continuous interpolation between two shapes, A and B, based on the Hausdorff distance. Originating from shape analysis and computational geometry, this concept is useful for applications such as morphing, blending, and measuring similarity between objects. By leveraging the Minkowski sum and intersection operations, the Hausdorff middle generates intermediate shapes that are equidistant from both A and B, offering a natural way to transition between them.
-            </p>
-            <p>
-                Given two sets A and B with a Hausdorff distance of 1, there always exists a set S<sub>α</sub> such that:
+                The <strong>Hausdorff middle</strong> for multiple sets is a generalization that finds a set T<sub>α</sub> minimizing the maximum Hausdorff distance to all input shapes. Given three compact sets A, B, and C, we compute:
             </p>
             <div class="formula">
-                S<sub>α</sub> = (A ⊕ D<sub>α</sub>) ∩ (B ⊕ D<sub>1-α</sub>)
+                T<sub>α</sub> = (A ⊕ D<sub>α</sub>) ∩ (B ⊕ D<sub>α</sub>) ∩ (C ⊕ D<sub>α</sub>)
             </div>
             <p>
-                where D<sub>r</sub> is a disk of radius r and ⊕ is the Minkowski sum. For α = 0.5, we obtain the "Hausdorff middle" at distance 0.5 from A and B. This construction ensures that S<sub>α</sub> smoothly interpolates between A (when α = 0) and B (when α = 1), making it a powerful tool for shape interpolation and comparison.
+                where α is the minimum value such that T<sub>α</sub> has Hausdorff distance at most α to each input set. According to van Kreveld et al., for three convex sets, α can be at most approximately 0.6068 (the "magic value"), while for general sets it can approach 1. This construction provides a natural way to find a middle shape that is equidistant from all three input shapes.
             </p>
         </div>
 
         <header>
-            <h1> Demo </h1>
+            <h1>Demo</h1>
         </header>
 
         <div class="main-content">
@@ -53,15 +50,15 @@
                 <canvas id="canvas" width="800" height="600"></canvas>
             </div>
             
-
             <div class="controls">
                 <div class="info-section">
                     <h4>💡 Instructions</h4>
                     <ol>
-                        <li>Select Shape A and place it</li>
-                        <li>Select Shape B and place it close</li>
-                        <li>Click "Compute S<sub>α</sub>" to see the interpolation</li>
-                        <li>Adjust α to see different interpolations</li>
+                        <li>Select Shape A and place it on canvas</li>
+                        <li>Select Shape B and place it on canvas</li>
+                        <li>Select Shape C and place it on canvas</li>
+                        <li>Click "Compute T<sub>α</sub>" to see the middle shape</li>
+                        <li>The algorithm finds optimal α automatically</li>
                     </ol>
                 </div>
                 <h3>🎮 Controls</h3>
@@ -69,6 +66,7 @@
                 <div class="mode-buttons">
                     <button class="mode-btn active" id="mode-a">Shape A</button>
                     <button class="mode-btn" id="mode-b">Shape B</button>
+                    <button class="mode-btn" id="mode-c">Shape C</button>
                 </div>
 
                 <div class="shape-selector">
@@ -80,25 +78,18 @@
                         <button class="shape-btn" data-shape="diamond">💎 Diamond</button>
                         <button class="shape-btn" data-shape="rectangle">📐 Rectangle</button>
                         <button class="shape-btn" data-shape="hexagon">⬡ Hexagon</button>
-                        <button class="shape-btn" data-shape="freeform">🖌️ Freeform</button>
                     </div>
                     <h4>Click on the screen to draw the shape</h4>
-                    
-                    <!-- <div class="position-controls">
-                        <input type="number" class="position-input" id="pos-x" placeholder="X" value="200">
-                        <input type="number" class="position-input" id="pos-y" placeholder="Y" value="200">
-                    </div>
-                    <small>Position (X, Y) to place the shape</small> -->
                 </div>
 
-                <button class="action-btn" id="compute-middle">Compute S<sub>α</sub></button>
+                <button class="action-btn" id="compute-middle">Compute T<sub>α</sub></button>
                 <button class="action-btn clear-btn" id="clear-all">Clear All</button>
 
-                <div class="alpha-control">
-                    <h4>Parameter α</h4>
-                    <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="0.5">
-                    <div class="alpha-value" id="alpha-value">α = 0.50</div>
-                    <small>α = 0.5 gives the Hausdorff middle</small>
+                <div class="alpha-control" style="opacity: 0.5;">
+                    <h4>Parameter α (computed automatically)</h4>
+                    <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="0.5" disabled>
+                    <div class="alpha-value" id="alpha-value">α = auto</div>
+                    <small>α is computed to minimize max distance to all shapes</small>
                 </div>
 
                 <div class="legend">
@@ -112,8 +103,12 @@
                         <span>Shape B</span>
                     </div>
                     <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 0, 255, 0.3);"></div>
+                        <span>Shape C</span>
+                    </div>
+                    <div class="legend-item">
                         <div class="legend-color" style="background: rgba(0, 255, 0, 0.4);"></div>
-                        <span>S<sub>α</sub> (Interpolation)</span>
+                        <span>T<sub>α</sub> (Middle)</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: rgba(255, 0, 0, 0.1); border-style: dashed;"></div>
@@ -121,26 +116,27 @@
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: rgba(0, 0, 255, 0.1); border-style: dashed;"></div>
-                        <span>B ⊕ D<sub>1-α</sub></span>
+                        <span>B ⊕ D<sub>α</sub></span>
                     </div>
-
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 0, 255, 0.1); border-style: dashed;"></div>
+                        <span>C ⊕ D<sub>α</sub></span>
+                    </div>
                 </div>
-
-                
 
                 <div class="info-section">
                     <h4>🔬 Properties</h4>
                     <ul>
-                        <li><strong>α = 0</strong>: S<sub>α</sub> = A</li>
-                        <li><strong>α = 1</strong>: S<sub>α</sub> = B</li>
-                        <li><strong>α = 0.5</strong>: Hausdorff middle</li>
-                        <li>Continuous distance between shapes</li>
+                        <li><strong>For 3 convex sets</strong>: α ≤ 0.6068 (magic value)</li>
+                        <li><strong>For general sets</strong>: α can approach 1</li>
+                        <li><strong>T<sub>α</sub></strong>: Intersection of all dilated shapes</li>
+                        <li>Minimizes maximum distance to all inputs</li>
+                        <li>Generalizes 2-shape Hausdorff middle</li>
                     </ul>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
-    <script src="js/hausdorff_middle.js"></script>
-    
+    <script src="js/hausdorff_middle_three_shape.js"></script>
 </body>
 </html>
