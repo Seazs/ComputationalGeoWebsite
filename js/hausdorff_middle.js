@@ -5,6 +5,8 @@
                 this.mode = 'A';
                 this.previousMode = null;
                 this.freeformPoints = [];
+
+
                 this.shapeA = null;
                 this.shapeB = null;
                 this.alpha = 0.5;
@@ -91,7 +93,6 @@
 
             addShape(shapeType, x, y) {
                 const shape = this.createShape(shapeType, x, y);
-                
                 if (this.mode === 'A') {
                     this.shapeA = shape;
                 } else {
