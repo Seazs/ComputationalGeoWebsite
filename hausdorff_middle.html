@@ -50,11 +50,6 @@
 
         <div class="main-content">
             <div class="canvas-container">
-                <canvas id="canvas" width="800" height="600"></canvas>
-            </div>
-            
-
-            <div class="controls">
                 <div class="info-section">
                     <h4>💡 Instructions</h4>
                     <ol>
@@ -64,8 +59,13 @@
                         <li>Adjust α to see different interpolations</li>
                     </ol>
                 </div>
-                <h3>🎮 Controls</h3>
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+            
+
+            <div class="controls">
                 
+                <h3>🎮 Controls</h3>
                 <div class="mode-buttons">
                     <button class="mode-btn active" id="mode-a">Shape A</button>
                     <button class="mode-btn" id="mode-b">Shape B</button>
@@ -83,6 +83,7 @@
                         <button class="shape-btn" data-shape="freeform">🖌️ Freeform</button>
                     </div>
                     <h4>Click on the screen to draw the shape</h4>
+                    <i> Crtl+z remove the last free shape point</i>
                     
                     <!-- <div class="position-controls">
                         <input type="number" class="position-input" id="pos-x" placeholder="X" value="200">

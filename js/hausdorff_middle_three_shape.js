@@ -100,6 +100,13 @@ class HausdorffMiddleThreeShapesDemo {
             this.clearAll();
         });
 
+        // Key press handler for Ctrl+Z
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'z') {
+                this.keyPressHandler(e);
+            }
+        });
+
     }
 
     addShape(shapeType, x, y) {
@@ -217,6 +224,28 @@ class HausdorffMiddleThreeShapesDemo {
         btn.style.background = '#28a745';
         
         this.render();
+    }
+    
+    keyPressHandler(e) {
+        var evtobj = e;
+
+        if (evtobj.ctrlKey && evtobj.keyCode == 90) {
+            // remove the last point from the freeform shape
+            if (this.freeformPoints.length > 0) {
+                this.freeformPoints.pop();
+                if (this.mode === 'A') {
+                    this.shapeA.points = [...this.freeformPoints];
+                } else if (this.mode === 'B') {
+                    this.shapeB.points = [...this.freeformPoints];
+                } else if (this.mode === 'C') {
+                    this.shapeC.points = [...this.freeformPoints];
+                }
+                this.render();
+            }else {
+                    alert('Aucun point à supprimer !');
+                }
+        }
+        
     }
 
     render() {

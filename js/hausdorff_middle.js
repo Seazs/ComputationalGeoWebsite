@@ -6,6 +6,7 @@ class HausdorffMiddleDemo {
         this.previousMode = null;
         this.freeformPoints = [];
 
+        
 
         this.shapeA = null;
         this.shapeB = null;
@@ -69,6 +70,7 @@ class HausdorffMiddleDemo {
             else {this.addShape(this.selectedShapeType, x, y);}
             
             // this.selectedShapeType = null; // Reset after placing
+            
         });
 
         // Control buttons
@@ -79,6 +81,7 @@ class HausdorffMiddleDemo {
         document.getElementById('clear-all').addEventListener('click', () => {
             this.clearAll();
         });
+        
 
         // Alpha slider
         const alphaSlider = document.getElementById('alpha-slider');
@@ -87,6 +90,13 @@ class HausdorffMiddleDemo {
             document.getElementById('alpha-value').textContent = `α = ${this.alpha.toFixed(2)}`;
             if (this.showMiddle) {
                 this.render();
+            }
+        });
+
+        // Key press handler for Ctrl+Z
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'z') {
+                this.keyPressHandler(e);
             }
         });
     }
@@ -197,6 +207,26 @@ class HausdorffMiddleDemo {
         btn.style.background = '#28a745';
         
         this.render();
+    }
+    
+    keyPressHandler(e) {
+        var evtobj = e;
+
+        if (evtobj.ctrlKey && evtobj.keyCode == 90) {
+            // remove the last point from the freeform shape
+            if (this.freeformPoints.length > 0) {
+                this.freeformPoints.pop();
+                if (this.mode === 'A') {
+                    this.shapeA.points = [...this.freeformPoints];
+                } else {
+                    this.shapeB.points = [...this.freeformPoints];
+                }
+                this.render();
+            } else {
+                alert('Aucun point à supprimer !');
+            }
+            
+        }
     }
 
     render() {
