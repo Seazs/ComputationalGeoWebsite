@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hausdorff Middle - Computational Geometry</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/triangular_slider.css">
+
 </head>
 <nav class="navbar">
     <a href="index.html" >Home</a>
@@ -47,10 +49,6 @@
 
         <div class="main-content">
             <div class="canvas-container">
-                <canvas id="canvas" width="800" height="600"></canvas>
-            </div>
-            
-            <div class="controls">
                 <div class="info-section">
                     <h4>💡 Instructions</h4>
                     <ol>
@@ -61,6 +59,11 @@
                         <li>The algorithm finds optimal α automatically</li>
                     </ol>
                 </div>
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+            
+            <div class="controls">
+                
                 <h3>🎮 Controls</h3>
                 
                 <div class="mode-buttons">
@@ -86,12 +89,38 @@
                 <button class="action-btn" id="compute-middle">Compute T<sub>α</sub></button>
                 <button class="action-btn clear-btn" id="clear-all">Clear All</button>
 
-                <div class="alpha-control" style="opacity: 0.5;">
-                    <h4>Parameter α (computed automatically)</h4>
-                    <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="0.5" disabled>
-                    <div class="alpha-value" id="alpha-value">α = auto</div>
-                    <small>α is computed to minimize max distance to all shapes</small>
-                </div>
+                <h1>Triangular slider</h1>
+                    <p class="subtitle">Move the slider to ajust the three values</p>
+                    
+                    <div class="triangle-container">
+                        <div class="triangle" id="triangle">
+                            <div class="cursor" id="cursor"></div>
+                        </div>
+                        <div class="triangle-labels">
+                            <div class="label label-a">Valeur A</div>
+                            <div class="label label-b">Valeur B</div>
+                            <div class="label label-c">Valeur C</div>
+                        </div>
+                    </div>
+                    
+                    <div class="values-display">
+                        <div class="value-box">
+                            <div class="value-label">Valeur A</div>
+                            <div class="value-number" id="valueA">0.33</div>
+                        </div>
+                        <div class="value-box">
+                            <div class="value-label">Valeur B</div>
+                            <div class="value-number" id="valueB">0.33</div>
+                        </div>
+                        <div class="value-box">
+                            <div class="value-label">Valeur C</div>
+                            <div class="value-number" id="valueC">0.33</div>
+                        </div>
+                    </div>
+                    
+                    <div class="formula">
+                        A + B + C = <span id="sum">1.00</span>
+                    </div>
 
                 <div class="legend">
                     <h4>Legend</h4>
@@ -124,20 +153,12 @@
                         <span>C ⊕ D<sub>α</sub></span>
                     </div>
                 </div>
-
-                <div class="info-section">
-                    <h4>🔬 Properties</h4>
-                    <ul>
-                        <li><strong>For 3 convex sets</strong>: α ≤ 0.6068 (magic value)</li>
-                        <li><strong>For general sets</strong>: α can approach 1</li>
-                        <li><strong>T<sub>α</sub></strong>: Intersection of all dilated shapes</li>
-                        <li>Minimizes maximum distance to all inputs</li>
-                        <li>Generalizes 2-shape Hausdorff middle</li>
-                    </ul>
-                </div>
             </div>
+
+
         </div>
     </div>
     <script src="js/hausdorff_middle_three_shape.js"></script>
+    <script src="js/triangular_slider.js"></script>
 </body>
 </html>

@@ -8,9 +8,12 @@ class HausdorffMiddleThreeShapesDemo {
         this.shapeC = null;
         this.previousMode = null;
         this.freeformPoints = [];
-        this.alpha = 0.5;
+        this.alpha1 = null;
+        this.alpha2 = null; 
+        this.alpha3 = null;
         this.showMiddle = false;
         this.selectedShapeType = null;
+        this.triangularSlider = new TriangularSlider();
         
         this.setupEventListeners();
         this.render();
@@ -43,6 +46,17 @@ class HausdorffMiddleThreeShapesDemo {
                 document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('selected'));
                 e.target.classList.add('selected');
             });
+        });
+        // In setupEventListeners()
+        document.addEventListener('triangularSliderChange', (e) => {
+            this.alpha1 = e.detail.a;
+            this.alpha2 = e.detail.b;
+            this.alpha3 = e.detail.c;
+            // logging the values for debugging
+            //console.log(`Alpha1: ${this.alpha1}, Alpha2: ${this.alpha2}, Alpha3: ${this.alpha3}`);
+            if (this.showMiddle) {
+                this.render();
+            }
         });
 
         //Canvas click to place shape
@@ -86,15 +100,6 @@ class HausdorffMiddleThreeShapesDemo {
             this.clearAll();
         });
 
-        // Alpha slider
-        const alphaSlider = document.getElementById('alpha-slider');
-        alphaSlider.addEventListener('input', (e) => {
-            this.alpha = parseFloat(e.target.value);
-            document.getElementById('alpha-value').textContent = `α = ${this.alpha.toFixed(2)}`;
-            if (this.showMiddle) {
-                this.render();
-            }
-        });
     }
 
     addShape(shapeType, x, y) {
@@ -200,6 +205,12 @@ class HausdorffMiddleThreeShapesDemo {
         this.shapeC = null;
         this.showMiddle = false;
         this.freeformPoints = [];
+        this.alpha1 = null;
+        this.alpha2 = null;
+        this.alpha3 = null;
+        
+        // Reset triangular slider to center
+        this.triangularSlider.setValues(1/3, 1/3, 1/3);
         
         const btn = document.getElementById('compute-middle');
         btn.innerHTML = 'Calculer T<sub>α</sub>';
@@ -239,22 +250,28 @@ class HausdorffMiddleThreeShapesDemo {
     }
 
     renderWithMiddle() {
-        // Compute the optimal alpha using the algorithm from the paper
-        const optimalAlpha = this.computeOptimalAlpha();
-        const radius = optimalAlpha * 100; // Scale for visualization
+        // Use the triangular slider values or fall back to default if not set (but keep 0 if set)
+        const alpha1 = (this.alpha1 !== null && this.alpha1 !== undefined) ? this.alpha1 : 0.33;
+        const alpha2 = (this.alpha2 !== null && this.alpha2 !== undefined) ? this.alpha2 : 0.33;
+        const alpha3 = (this.alpha3 !== null && this.alpha3 !== undefined) ? this.alpha3 : 0.33;
+        
+        // Scale for visualization
+        const radius1 = alpha1 * 100;
+        const radius2 = alpha2 * 100;
+        const radius3 = alpha3 * 100;
         
         // Draw dilated shapes first (background)
-        this.drawDilatedShape(this.shapeA.points, radius, 'rgba(255, 0, 0, 0.1)', '#ff4444', true);
-        this.drawDilatedShape(this.shapeB.points, radius, 'rgba(0, 0, 255, 0.1)', '#4444ff', true);
-        this.drawDilatedShape(this.shapeC.points, radius, 'rgba(255, 0, 255, 0.1)', '#ff44ff', true);
+        this.drawDilatedShape(this.shapeA.points, radius1, 'rgba(255, 0, 0, 0.1)', '#ff4444', true);
+        this.drawDilatedShape(this.shapeB.points, radius2, 'rgba(0, 0, 255, 0.1)', '#4444ff', true);
+        this.drawDilatedShape(this.shapeC.points, radius3, 'rgba(255, 0, 255, 0.1)', '#ff44ff', true);
         
         // Draw original shapes
         this.drawShape(this.shapeA.points, 'rgba(255, 0, 0, 0.3)', '#ff0000', 3);
         this.drawShape(this.shapeB.points, 'rgba(0, 0, 255, 0.3)', '#0000ff', 3);
         this.drawShape(this.shapeC.points, 'rgba(255, 0, 255, 0.3)', '#ff00ff', 3);
         
-        // Calculate and draw the intersection T_α
-        this.drawThreeShapeIntersection(radius);
+        // Calculate and draw the intersection using all three radii
+        this.drawThreeShapeIntersection(radius1, radius2, radius3);
         
         // Draw labels
         this.drawLabel(this.shapeA.center, 'A', '#ff0000');
@@ -264,9 +281,9 @@ class HausdorffMiddleThreeShapesDemo {
         // Draw info text
         this.ctx.fillStyle = '#333';
         this.ctx.font = '16px Arial';
-        this.ctx.fillText(`α optimal = ${optimalAlpha.toFixed(3)}`, 20, 30);
-        this.ctx.fillText(`Rayon: ${radius.toFixed(1)}px`, 20, 50);
-        this.ctx.fillText(`T_α = ∩ (Ai ⊕ D_α)`, 20, 70);
+        this.ctx.fillText(`α₁ = ${alpha1.toFixed(3)}`, 20, 30);
+        this.ctx.fillText(`α₂ = ${alpha2.toFixed(3)}`, 20, 50);
+        this.ctx.fillText(`α₃ = ${alpha3.toFixed(3)}`, 20, 70);
     }
 
     computeOptimalAlpha() {
@@ -328,8 +345,7 @@ class HausdorffMiddleThreeShapesDemo {
         return hasIntersection;
     }
 
-    drawThreeShapeIntersection(radius) {
-        // Sample points on a grid and check if they're in all three dilated shapes
+    drawThreeShapeIntersection(radius1, radius2, radius3) {
         const step = 4;
         const intersectionPoints = [];
         
@@ -337,9 +353,9 @@ class HausdorffMiddleThreeShapesDemo {
             for (let y = 0; y < this.canvas.height; y += step) {
                 const point = {x, y};
                 
-                const inA = this.isPointInDilatedShape(point, this.shapeA.points, radius);
-                const inB = this.isPointInDilatedShape(point, this.shapeB.points, radius);
-                const inC = this.isPointInDilatedShape(point, this.shapeC.points, radius);
+                const inA = this.isPointInDilatedShape(point, this.shapeA.points, radius1);
+                const inB = this.isPointInDilatedShape(point, this.shapeB.points, radius2);
+                const inC = this.isPointInDilatedShape(point, this.shapeC.points, radius3);
                 
                 if (inA && inB && inC) {
                     intersectionPoints.push(point);
@@ -347,19 +363,16 @@ class HausdorffMiddleThreeShapesDemo {
             }
         }
         
-        // Draw the intersection points
+        // Draw intersection points and boundary
         this.ctx.fillStyle = 'rgba(0, 255, 0, 0.7)';
         for (let point of intersectionPoints) {
             this.ctx.fillRect(point.x - 1, point.y - 1, 3, 3);
         }
         
-        // Draw a boundary around the intersection if there are enough points
         if (intersectionPoints.length > 10) {
             const boundary = this.calculateBoundary(intersectionPoints);
             if (boundary.length > 2) {
                 this.drawShape(boundary, 'rgba(0, 255, 0, 0.4)', '#00aa00', 4);
-                
-                // Add label for T_α
                 const center = this.calculateCentroid(boundary);
                 this.drawLabel(center, 'T_α', '#00aa00');
             }
