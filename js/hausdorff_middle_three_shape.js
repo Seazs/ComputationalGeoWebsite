@@ -78,7 +78,7 @@ class HausdorffMiddleThreeShapesDemo {
                         const shape = {
                             type: 'freeform',
                             points: [...this.freeformPoints],
-                            center: this.freeformPoints[0]
+                            center: this.calculateCentroid(this.freeformPoints)
                         };
                         if (this.mode === 'A') {this.shapeA = shape;}
                         else if(this.mode === 'B') {this.shapeB = shape;}
@@ -98,6 +98,10 @@ class HausdorffMiddleThreeShapesDemo {
 
         document.getElementById('clear-all').addEventListener('click', () => {
             this.clearAll();
+        });
+
+        document.getElementById('set-optimal-alphas').addEventListener('click', () => {
+            this.setOptimalAlphas();
         });
 
         // Key press handler for Ctrl+Z
@@ -205,6 +209,30 @@ class HausdorffMiddleThreeShapesDemo {
         
         this.render();
     }
+    setOptimalAlphas() {
+        if (!this.shapeA || !this.shapeB || !this.shapeC) {
+                alert('Veuillez d\'abord sélectionner les trois formes A, B et C !');
+                return;
+            }
+            // Compute optimal alphas based on the shapes  
+            this.alpha1 = this.computeOptimalAlpha();
+            this.alpha2 = this.computeOptimalAlpha();   
+            this.alpha3 = this.computeOptimalAlpha();
+            // Update the triangular slider values
+            this.triangularSlider.setValues(this.alpha1, this.alpha2, this.alpha3);
+            // Update the display
+            document.getElementById('valueA').innerText = this.alpha1.toFixed(3);
+            document.getElementById('valueB').innerText = this.alpha2.toFixed(3);
+            document.getElementById('valueC').innerText = this.alpha3.toFixed(3);
+
+            // Render the shapes with the new alphas
+            if (this.showMiddle) {
+                this.renderWithMiddle();
+            } else {
+                this.renderShapesOnly();
+            }
+        }
+        
 
     clearAll() {
         this.shapeA = null;

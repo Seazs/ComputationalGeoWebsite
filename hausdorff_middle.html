@@ -42,6 +42,15 @@
             <p>
                 where D<sub>r</sub> is a disk of radius r and ⊕ is the Minkowski sum. For α = 0.5, we obtain the "Hausdorff middle" at distance 0.5 from A and B. This construction ensures that S<sub>α</sub> smoothly interpolates between A (when α = 0) and B (when α = 1), making it a powerful tool for shape interpolation and comparison.
             </p>
+            <!-- put a vertical space -->
+            <br>
+            <p>
+                <strong>Intuitive Explanation:</strong> Imagine you have two shapes, A and B. The Hausdorff middle is like a bridge that connects them, allowing you to smoothly transition from one shape to the other. By adjusting the parameter α, you can control how much influence each shape has on the resulting middle shape.
+            <div class="theory-image">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <img src="images/shape_interpolation.jpg" alt="Hausdorff Middle Example" style="max-width: 100%; width: 800px; height: auto; display: block;">
+                </div>
+            </div>
         </div>
 
         <header>
@@ -60,6 +69,18 @@
                     </ol>
                 </div>
                 <canvas id="canvas" width="800" height="600"></canvas>
+                <div class="implementation-box" style="margin-top: 32px;">
+                    <h3>🛠️ How the Demo Works</h3>
+                    <p>
+                        This demo lets you interactively explore the Hausdorff middle between two shapes. You can select and place shapes A and B on the canvas, then use the α slider to control the interpolation.
+                    </p>
+                    <p>
+                        For each value of α, the program computes two Minkowski sums: it "grows" shape A by a disk of radius α and shape B by a disk of radius 1-α. The intersection of these two expanded shapes gives the intermediate shape S<sub>α</sub>.
+                    </p>
+                    <p>
+                        The shapes and their interpolations are visualized using basic geometry algorithms. The result shows how the Hausdorff middle changes smoothly as α varies, helping you understand the geometric transition between A and B.
+                    </p>
+            </div>
             </div>
             
 
@@ -83,7 +104,7 @@
                         <button class="shape-btn" data-shape="freeform">🖌️ Freeform</button>
                     </div>
                     <h4>Click on the screen to draw the shape</h4>
-                    <i> Crtl+z remove the last free shape point</i>
+                    <i> Crtl+z remove the last free shape points</i>
                     
                     <!-- <div class="position-controls">
                         <input type="number" class="position-input" id="pos-x" placeholder="X" value="200">

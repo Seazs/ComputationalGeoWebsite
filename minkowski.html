@@ -29,17 +29,39 @@
         </header>
         <div class="theory-box">
             <h3>🎯 Theoretical Concept</h3>
-            <p>The minkowski sum of sets A and B is defined as 
-                . 
+            <p>
+                The <strong>Minkowski sum</strong> is a fundamental operation in computational geometry, used to combine two sets of points (often shapes) in space. Formally, given two sets <strong>A</strong> and <strong>B</strong> in a vector space, their Minkowski sum is defined as:
+            </p>
             <div class="formula">
-                A⊕︎B={a + b | a ∈ A, b ∈ B}            </div>
-            <p>This looks like this:</p>
+                A ⊕ B = { a + b | a ∈ A, b ∈ B }
+            </div>
+            <p>
+                This means that for every point <strong>a</strong> in set <strong>A</strong> and every point <strong>b</strong> in set <strong>B</strong>, you add their coordinates together to get a new point. The collection of all such points forms the Minkowski sum.
+            </p>
+            <p>
+                <strong>Intuitive Explanation:</strong> Imagine sliding one shape (<strong>B</strong>) over every point of another shape (<strong>A</strong>). The area covered by the moving shape traces out the Minkowski sum. This is especially useful in robotics (for collision detection), computer graphics, and motion planning.
+            </p>
             <div class="theory-image">
                 <div style="display: flex; justify-content: center; align-items: center;">
                     <img src="images/minkowski_exemple.png" alt="Minkowski Sum Example" style="max-width: 100%; width: 450px; height: auto; display: block;">
                 </div>
             </div>
-            <p>Intuitively, The Minkowski sum can be seen as running a shape along another, and the "trace" left behind is the resulting set (but it's a very simplified view and the terms are not exact).</p>
+            <p>
+                <strong>Properties:</strong>
+                <ul>
+                    <li>The Minkowski sum of two convex shapes is always convex.</li>
+                    <li>It is commutative: A ⊕ B = B ⊕ A.</li>
+                    <li>It is associative: (A ⊕ B) ⊕ C = A ⊕ (B ⊕ C).</li>
+                </ul>
+            </p>
+            <p>
+                <strong>Applications:</strong>
+                <ul>
+                    <li><strong>Collision Detection:</strong> Used to check if two objects can overlap by transforming the problem into a simpler one.</li>
+                    <li><strong>Path Planning:</strong> Helps robots or moving objects avoid obstacles by "growing" obstacles using the Minkowski sum.</li>
+                    <li><strong>Computer Graphics:</strong> Used for shape blending and morphing.</li>
+                </ul>
+            </p>
         </div>
         <header>
             <h1> Demo </h1>
@@ -47,6 +69,18 @@
         <div class="main-content">
             <div class="canvas-container">
                 <canvas id="canvas" width="800" height="600"></canvas>
+                <div class="implementation-box" style="margin-top: 32px;">
+                    <h3>🛠️ How the Demo Works</h3>
+                    <p>
+                        This interactive demo lets you explore the Minkowski sum visually. You can select and place two shapes (A and B) on the canvas. When you click "Compute Minkowski Sum," the program calculates the sum by combining every point of shape A with every point of shape B, following the Minkowski sum definition.
+                    </p>
+                    <p>
+                        The result is shown as a new shape (in orange), representing all possible sums of points from A and B. The implementation uses basic geometry: each shape is represented as a set of points, and the Minkowski sum is computed by adding the coordinates of every pair of points from the two shapes. The boundary of the resulting set is then drawn using a convex hull algorithm for clarity.
+                    </p>
+                    <p>
+                        This approach allows you to see how the Minkowski sum changes depending on the shapes you choose, and helps illustrate its geometric properties and applications.
+                    </p>
+                </div>
             </div>
             <div class="controls">
                 <div class="info-section">

@@ -60,7 +60,7 @@ class HausdorffMiddleDemo {
                     const shape = {
                         type: 'freeform',
                         points: [...this.freeformPoints],
-                        center: this.freeformPoints[0]
+                        center: this.calculateCentroid(this.freeformPoints)
                     };
                     if (this.mode === 'A') {this.shapeA = shape;}
                     else                   {this.shapeB = shape;}
@@ -208,7 +208,7 @@ class HausdorffMiddleDemo {
         
         this.render();
     }
-    
+
     keyPressHandler(e) {
         var evtobj = e;
 

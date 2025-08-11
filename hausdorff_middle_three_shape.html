@@ -33,13 +33,19 @@
         <div class="theory-box">
             <h3>🎯 Theoretical Concept</h3>
             <p>
-                The <strong>Hausdorff middle</strong> for multiple sets is a generalization that finds a set T<sub>α</sub> minimizing the maximum Hausdorff distance to all input shapes. Given three compact sets A, B, and C, we compute:
+                The <strong>Hausdorff middle for three shapes</strong> is a robust geometric method for finding a "middle" shape that is as close as possible to all three input shapes, A, B, and C, in terms of Hausdorff distance. This generalization is important in shape analysis, morphing, and multi-object blending, where you want a shape that fairly represents all inputs.
+            </p>
+            <p>
+                The construction uses the <strong>Minkowski sum</strong> to "grow" each shape by a disk of radius α, and then takes the intersection of these expanded shapes:
             </p>
             <div class="formula">
                 T<sub>α</sub> = (A ⊕ D<sub>α</sub>) ∩ (B ⊕ D<sub>α</sub>) ∩ (C ⊕ D<sub>α</sub>)
             </div>
             <p>
-                where α is the minimum value such that T<sub>α</sub> has Hausdorff distance at most α to each input set. According to van Kreveld et al., for three convex sets, α can be at most approximately 0.6068 (the "magic value"), while for general sets it can approach 1. This construction provides a natural way to find a middle shape that is equidistant from all three input shapes.
+                Here, α is chosen as the smallest value such that T<sub>α</sub> is within Hausdorff distance α of each input shape. For convex shapes, there is a theoretical lower bound for α (about 0.6068), but for general shapes it can be higher. This approach guarantees that the resulting middle shape is equidistant from all three inputs, making it a fair and mathematically sound interpolation.
+            </p>
+            <p>
+                <strong>Why is this useful?</strong> The Hausdorff middle for three shapes provides a principled way to blend or compare multiple objects, ensuring that the result is not biased toward any single input. It is widely used in computational geometry, graphics, and shape optimization.
             </p>
         </div>
 
@@ -56,10 +62,22 @@
                         <li>Select Shape B and place it on canvas</li>
                         <li>Select Shape C and place it on canvas</li>
                         <li>Click "Compute T<sub>α</sub>" to see the middle shape</li>
-                        <li>The algorithm finds optimal α automatically</li>
+                        <li>Use the optimal α value or use the <strong>Triangular slider</strong></li>
                     </ol>
                 </div>
                 <canvas id="canvas" width="800" height="600"></canvas>
+                        <div class="implementation-box" style="margin-top: 32px;">
+                            <h3>🛠️ How the Demo Works</h3>
+                            <p>
+                                This demo lets you select and place three shapes (A, B, and C) on the canvas. When you click "Compute T<sub>α</sub>" you have the choice to use the optimal values that's been calculated with the  <a href="https://doi.org/10.1016/j.cagd.2010.01.001" target="_blank">paper</a> method. Alternatively, you can use the triangular slider to adjust the α values for each shape interactively.
+                            </p>
+                            <p>
+                                For each shape, the program computes the Minkowski sum with a disk of radius proportional to its α value. The intersection of these three expanded shapes produces the middle shape T<sub>α</sub>. The triangular slider is implemented using barycentric coordinates: moving the cursor inside the triangle updates the α values in real time, and the visualization responds instantly.
+                            </p>
+                            <p>
+                                This practical implementation combines geometric algorithms for Minkowski sums and set intersection with an interactive triangular slider, allowing you to experiment with the concept of the Hausdorff middle for three shapes and see how the result changes as you adjust the α values.
+                            </p>
+                        </div>
             </div>
             
             <div class="controls">
@@ -119,6 +137,9 @@
                             <div class="value-number" id="valueC">0.33</div>
                         </div>
                     </div>
+
+                    <!-- add a buton to set alphas value to the optimal one -->
+                    <button class="action-btn" id="set-optimal-alphas">Set Optimal Alphas</button>
                     
                     <div class="formula">
                         A + B + C = <span id="sum">1.00</span>
