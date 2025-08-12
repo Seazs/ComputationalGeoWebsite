@@ -49,6 +49,14 @@ fetch('navbar.html')
         <div class="theory-box">
     <h2>🎯 Theoretical Concept</h2>
       <h3>Definition</h3>
+    <p>
+        The Hausdorff distance is a measure of how far two subsets of a metric space are from each other. It is widely used in computational geometry, computer vision, and shape analysis to quantify the similarity or dissimilarity between shapes, point clouds, or images. For example, it helps compare the outlines of objects, match patterns, and evaluate the accuracy of shape reconstruction algorithms.
+    </p>
+    <p>
+        One interesting property of the Hausdorff distance is its sensitivity to outliers: a single distant point can significantly affect the result. This makes it useful for applications where the worst-case difference matters, such as quality control or robust shape matching.
+    </p>
+    <br>
+    <h3>Mathematical Definition</h3>
       <p>Let's formally define the Hausdorff distance. </p>
       <p>Here is the definition of the directed Hausdorff distance between two sets of points. It is defined as the maximum distance of a point in one set to the closest point in the other set. It makes more sense seeing it as math : </p> 
       <img src="../images/equation/hausdorff_eq.png" class="center" alt="Hausdorff equation" width="34%">
@@ -60,7 +68,7 @@ fetch('navbar.html')
       <h3>Algorithms</h3>
         <h4>1) Brute force</h4>
         <p>A simple brute force algorithm for that would look something like this :</p>
-        <embed type="text/txt" src="hausdorff_algo.txt"  width="500" height="200">
+        <embed type="text/txt" src="hausdorff_algo.txt"  width="500" height="200" >
           
             <TD ALIGN=center>
             <script language="Javascript" SRC="js/fig3.js"></script>
