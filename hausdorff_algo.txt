@@ -1,0 +1,9 @@
+1.  h = 0
+2.  for every point a_i of A,
+      2.1  shortest = Inf ;
+      2.2  for every point b_j of B
+                    d_ij = d (a_i , b_j )
+                    if d_ij < shortest then
+                              shortest = d_ij
+      2.3  if shortest > h then
+                    h = shortest

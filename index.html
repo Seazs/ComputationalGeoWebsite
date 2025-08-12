@@ -6,13 +6,31 @@
     <title>Computational Geometry Project</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<nav class="navbar">
-    <a href="index.html" class="active">Home</a>
-    <a href="minkowski.html">Minkowski Sum</a>
-    <a href="hausdorff_middle.html">Hausdorff Middle</a>
-    <a href="hausdorff_middle_three_shape.html">Hausdorff Middle for 3 shape</a>
-    <a href="references.html">References</a>
-</nav>
+
+<div id="navbar-container"></div>
+<script>
+fetch('navbar.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+        setActiveLink();
+    });
+
+    function setActiveLink() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const links = document.querySelectorAll('.navbar a');
+        
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+</script>
+
 <div class="github-link">
     <a href="https://github.com/Seazs/ComputationalGeoWebsite" target="_blank" title="GitHub Repository">
         <svg viewBox="0 0 24 24" aria-hidden="true">
