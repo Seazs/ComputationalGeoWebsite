@@ -47,12 +47,43 @@ fetch('navbar.html')
         </header>
 
         <div class="theory-box">
-            <h3>🎯 Theoretical Concept</h3>
-            <p>
-                The <strong>Hausdorff middle</strong> is a geometric construction that provides a continuous interpolation between two shapes, A and B, based on the Hausdorff distance. Originating from shape analysis and computational geometry, this concept is useful for applications such as morphing, blending, and measuring similarity between objects. By leveraging the Minkowski sum and intersection operations, the Hausdorff middle generates intermediate shapes that are equidistant from both A and B, offering a natural way to transition between them.
-            </p>
+    <h2>🎯 Theoretical Concept</h2>
+      <h3>Definition</h3>
+      <p>Let's formally define the Hausdorff distance. </p>
+      <p>Here is the definition of the directed Hausdorff distance between two sets of points. It is defined as the maximum distance of a point in one set to the closest point in the other set. It makes more sense seeing it as math : </p> 
+      <img src="../images/equation/hausdorff_eq.png" class="center" alt="Hausdorff equation" width="34%">
+      
+      <p>Where d(a,b) is the Euclidian distance between two points.</p></p>
+      <p>To make it more general, we can define the undirected Hausdorff distance, which is the maximum between the two directed Hausdorff distances. </p>
+      <img src="../images/equation/haus_undirected.png" class="center" alt="Hausdorff equation" width="40%">
+      
+      <h3>Algorithms</h3>
+        <h4>1) Brute force</h4>
+        <p>A simple brute force algorithm for that would look something like this :</p>
+        <embed type="text/txt" src="hausdorff_algo.txt"  width="500" height="200">
+          
+            <TD ALIGN=center>
+            <script language="Javascript" SRC="js/fig3.js"></script>
+            <MAP NAME="changeFig3">
+              <AREA SHAPE="RECT" COORDS="345,255,368,279" 
+                  HREF="javascript:previousIm()">
+              <AREA SHAPE="RECT" COORDS="381,255,404,279" 
+                  HREF="javascript:nextIm()">
+            </MAP>
+            <img SRC="https://cgm.cs.mcgill.ca/~godfried/teaching/cg-projects/98/normand/fig3_1.gif" NAME="BruteForceFig" 
+              BORDER="0" WIDTH="436" HEIGHT="305" USEMAP="#changeFig3">
+            <P><U>Figure 3 :</U>&nbsp; &nbsp; A nice animation taken from <A HREF="https://cgm.cs.mcgill.ca/~godfried/teaching/cg-projects/98/normand/main.html">here</A> showing the calculation of Hausdorff distance between two shapes.
+          </TD>
 
-        </div>
+          <p>To find the directed distance, such an algorithm runs in O(nm)+O(n)=O(nm). 
+            That needs to be performed two times to get the undirected distance.</p>
+        
+        <h4>2) ATALLAH algorithm</h4>
+        <a href="attalah_algo.html">Attalah</a>
+        
+      <!-- <p><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js"></script></p>
+      <p><script src="../js/concept_1.js"></script><p> -->
+    </div>
 
         <header>
             <h1> Demo </h1>
@@ -64,92 +95,7 @@ fetch('navbar.html')
             </div>
             
 
-            <div class="controls">
-                <div class="info-section">
-                    <h4>💡 Instructions</h4>
-                    <ol>
-                        <li>Select Shape A and place it</li>
-                        <li>Select Shape B and place it close</li>
-                        <li>Click "Compute S<sub>α</sub>" to see the interpolation</li>
-                        <li>Adjust α to see different interpolations</li>
-                    </ol>
-                </div>
-                <h3>🎮 Controls</h3>
-                
-                <div class="mode-buttons">
-                    <button class="mode-btn active" id="mode-a">Shape A</button>
-                    <button class="mode-btn" id="mode-b">Shape B</button>
-                </div>
-
-                <div class="shape-selector">
-                    <h4>Choose a shape:</h4>
-                    <div class="shape-buttons">
-                        <button class="shape-btn" data-shape="circle">🔵 Circle</button>
-                        <button class="shape-btn" data-shape="square">⬜ Square</button>
-                        <button class="shape-btn" data-shape="triangle">🔺 Triangle</button>
-                        <button class="shape-btn" data-shape="diamond">💎 Diamond</button>
-                        <button class="shape-btn" data-shape="rectangle">📐 Rectangle</button>
-                        <button class="shape-btn" data-shape="hexagon">⬡ Hexagon</button>
-                        <button class="shape-btn" data-shape="freeform">🖌️ Freeform</button>
-                    </div>
-                    <h4>Click on the screen to draw the shape</h4>
-                    
-                    <!-- <div class="position-controls">
-                        <input type="number" class="position-input" id="pos-x" placeholder="X" value="200">
-                        <input type="number" class="position-input" id="pos-y" placeholder="Y" value="200">
-                    </div>
-                    <small>Position (X, Y) to place the shape</small> -->
-                </div>
-
-                <button class="action-btn" id="compute-middle">Compute S<sub>α</sub></button>
-                <button class="action-btn clear-btn" id="clear-all">Clear All</button>
-
-                <div class="alpha-control">
-                    <h4>Parameter α</h4>
-                    <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="0.5">
-                    <div class="alpha-value" id="alpha-value">α = 0.50</div>
-                    <small>α = 0.5 gives the Hausdorff middle</small>
-                </div>
-
-                <div class="legend">
-                    <h4>Legend</h4>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(255, 0, 0, 0.3);"></div>
-                        <span>Shape A</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(0, 0, 255, 0.3);"></div>
-                        <span>Shape B</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(0, 255, 0, 0.4);"></div>
-                        <span>S<sub>α</sub> (Interpolation)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(255, 0, 0, 0.1); border-style: dashed;"></div>
-                        <span>A ⊕ D<sub>α</sub></span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(0, 0, 255, 0.1); border-style: dashed;"></div>
-                        <span>B ⊕ D<sub>1-α</sub></span>
-                    </div>
-
-                </div>
-
-                
-
-                <div class="info-section">
-                    <h4>🔬 Properties</h4>
-                    <ul>
-                        <li><strong>α = 0</strong>: S<sub>α</sub> = A</li>
-                        <li><strong>α = 1</strong>: S<sub>α</sub> = B</li>
-                        <li><strong>α = 0.5</strong>: Hausdorff middle</li>
-                        <li>Continuous distance between shapes</li>
-                    </ul>
-                </div>
-            </div>            
-        </div>
-    </div>
+            
     <script src="js/distance.js"></script>
     
 </body>

@@ -1,0 +1,51 @@
+<p>In 1983, Mikhail J. Atallah proposed an algorithm  for convex shapes that runs in linear time : O(n+m).  </p>
+        <p>The proof is based on 3 lemmas :</p>
+        
+          <li> <strong>Lemma 1 </strong>: Let d(x, y) = D(A, B), where x is a point
+            of A and y is a point of B. Then 
+            <ul><li>(i) the perpendicular to xy at x is a supporting 
+            line of A, and A is on the same side as B relative to
+            that supporting line, and</li>
+            <li>(ii) the perpendicular to xy at y is a supporting
+            line of B, and x and B are on different sides relative
+            to that line.</li></ul></li>
+            <img src="../images/proof.png" width="40%">
+          <li><strong>Lemma 2 </strong>: There is a vertex x of A such that the
+            distance from x to B is equal to D(A, B). </li>
+          <li><strong>Lemma 3 </strong>: The scan σ changes direction exactly twice. </li>
+          <p>The scan is performed in that way : for a vertex 
+            vk of A, we draw a line vk yk (yk is either a vertex of B or a point on an edge of B perpendicular to the edge). 
+            If the next point vk+1 is to the left of vk yk, we scan B counterclockwise, otherwise we scan it clockwise. Because the 
+            shape is convex, the 3rd lemma makes sense. The idea of the algo resides on that last lemma.
+            It guarantees that the repetitive execution of Step 2 will not
+            cause polygon B to be ‘scanned’ more than twice.
+          </p>
+        
+        <h4>The algo</h4>
+
+        <p>Step 1. Computer do and find y. (this can clearly
+          be done in O(m) time). Set D(A, B) + d,
+          and k + 0.</p>
+        <p>Step 2 (finding yk + , )
+          Case 1. vk+, is to the left of ykvk: Search for
+          yk + 1 by ‘scanning’ polygon B counterclockwise,
+          starting at y,., until one of the following two
+          conditions is satisfied:
+          (i) The edge of B being considered (call it
+          w,w,+,) is such that the foot (call it z) of the
+          perpendicular from vk+, to WOWS+1 is between
+          wq and w,+,. In this case set yk+ , + z.
+          (ii) The vertex of B being considered (call it
+          w4) is such that the perpendicular to vL+,wq at
+          ws is a supporting line of B. In this case set
+          Ykt, ‘WC,.
+          Case 2. vk+, is to the right of ykvk: This case
+          is similar to Case 1, except that the search for
+          yk + , is done by ‘scanning’ polygon B clockwise,
+          starting at yk.
+          Case 3. vk+, is on ykvk (but not necessarily
+          between yk and vk): Set yk+, + yk.</p>
+          <p>Step 3. Set
+          D(A, B) +max{D(A, B), d(vk+,, Ye+,)}
+          and k + k + 1 mod n. If k f 0, then go to
+          Step 2, otherwise stop.</p>
