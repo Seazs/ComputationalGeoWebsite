@@ -54,9 +54,39 @@ fetch('navbar.html')
             <blockquote>
                 <strong>Vermeulen, J.L., et al. (2021).</strong> <em>Computing the Hausdorff middle and its applications in shape interpolation</em>. <a href="https://doi.org/10.1016/j.comgeo.2021.101817" target="_blank">Computational Geometry, 101817</a>.
             </blockquote>
+            <br>
+            <p>
+            The Hausdorff distance is a metric used mainly in computer 
+            vision and computational geometry to assess the similarity 
+            between two objects (set of points or 
+            polygons for example). Imagine two shapes at a H distance of 1. 
+            Now imagine what could be the shape that sits exactly in the 
+            middle of them, what is the shape that has the same Hausdorff 
+            distance to A and to B ? Does an intermediate shape like that 
+            always exists ? Is is convex, correct ? How can we interpolate 
+            such shape ? This work will address this issue and go further by 
+            generalizing this concept.
+            </p>
             <p>
                 The demos allow users to experiment with shape interpolation and Minkowski sums, visualizing the theoretical concepts interactively.
             </p>
+            <br>
+            <h2>Key concepts overview</h2>
+            
+                <h3>📏 Hausdorf distance</h3>
+                    <img src="images/hausdorff_intuition.png" alt="hausdorf" style="max-width: 100%; width: 450px; height: auto; display: block;">
+                    We can see that the distance is not symetric, d(A,B) = 4 and d(B,A) = 5. The undirected distance is the maximum of the two.
+                
+                <h3>🧮 Minkowski sum</h3>
+                    <p>The minkowski sum of sets A and B is defined as A⊕︎B={a + b | a ∈ A, b ∈ B}. This looks like this : </p>
+                    <img src="images/minkowski_exemple.png" class="center" alt="Minkowski sum on two sets" style="max-width: 100%; width: 450px; height: auto; display: block;">
+                
+                <h3>💻 Computing S_1/2</h3>
+                    <p>Let's define a set where the two objects are at a Hausdorff distance of 1. There is only one maximum set S that lies at the same Hausdorff distance from A and from B. </p>
+                    <p>  S(A, B) := ( A ⊕ D1/2) ∩ (B ⊕ D1/2)</p>
+                    <img src="images/s122.png" width="60%" alt="S_1/2" style="max-width: 100%; width: 450px; height: auto; display: block;">
+                    <P><U>Figure 3 :</U>&nbsp; &nbsp; showing the S1/2 set. We take the Minkowski sum of the </P>
+                
         </div>
 
         <div class="theory-box">
