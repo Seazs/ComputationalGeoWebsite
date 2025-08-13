@@ -9,6 +9,9 @@
 
 <div id="navbar-container"></div>
 <script>
+    function zoom(){
+        document.body.style.zoom = "80%" 
+    }
 fetch('navbar.html')
     .then(response => response.text())
     .then(data => {
@@ -39,7 +42,7 @@ fetch('navbar.html')
         GitHub
     </a>
 </div>
-<body>
+<body onload="zoom()">
     <div class="container">
         <header>
             <h1>Computational Geometry Project</h1>
@@ -49,7 +52,7 @@ fetch('navbar.html')
         <div class="theory-box">
             <h2>Project Overview</h2>
             <p>
-                This website presents interactive demos for computational geometry concepts, focusing on Minkowski sums and the Hausdorff middle. The project is based on the paper:
+                This website presents interactive demos for computational geometry concepts, focusing on Hausdorff distance, Minkowski sums and Hausdorff middle. The project is based on the paper:
             </p>
             <blockquote>
                 <strong>Vermeulen, J.L., et al. (2021).</strong> <em>Computing the Hausdorff middle and its applications in shape interpolation</em>. <a href="https://doi.org/10.1016/j.comgeo.2021.101817" target="_blank">Computational Geometry, 101817</a>.
@@ -89,14 +92,7 @@ fetch('navbar.html')
                 
         </div>
 
-        <div class="theory-box">
-            <h2>Work Distribution &amp; Acknowledgements</h2>
-            <ul>
-                <li><strong>Bienfait Alexandre:</strong> <strong> TODO</strong> </li>
-                <li><strong>Mutkowski Philippe:</strong> <strong> TODO</strong> </li>
-            </ul>
-
-        </div>
+        
     </div>
 </body>
 </html>

@@ -9,6 +9,9 @@
 
 <div id="navbar-container"></div>
 <script>
+    function zoom(){
+        document.body.style.zoom = "80%" 
+    }
 fetch('navbar.html')
     .then(response => response.text())
     .then(data => {
@@ -39,7 +42,7 @@ fetch('navbar.html')
         GitHub
     </a>
 </div>
-<body>
+<body onload="zoom()">
     <div class="container">
         <header>
             <h1>References</h1>
@@ -60,6 +63,12 @@ fetch('navbar.html')
                 This project was developed by Bienfait Alexandre and Mutkowski Philippe for the ULB Computational Geometry course.<br>
                 LLMs have been used to help us with css and html code, allowing us to focus on the theoretical aspects of the project.
             </p>
+            <h2>Work Distribution</h2>
+            
+            <p><strong>Bienfait Alexandre:</strong> Minkowski Sum & Hausdorff distance for 3 shape</p>
+            <p><strong>Mutkowski Philippe:</strong> Hasudorff distance, hausdorff middle & free form drawing</p>
+            
+
         </div>
     </div>
 </body>

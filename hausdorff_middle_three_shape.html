@@ -11,6 +11,9 @@
 
 <div id="navbar-container"></div>
 <script>
+    function zoom(){
+        document.body.style.zoom = "80%" 
+    }
 fetch('navbar.html')
     .then(response => response.text())
     .then(data => {
@@ -42,7 +45,7 @@ fetch('navbar.html')
         GitHub
     </a>
 </div>
-<body>
+<body onload="zoom()">
     <div class="container">
         <header>
             <h1>Hausdorff Middle Demo</h1>
