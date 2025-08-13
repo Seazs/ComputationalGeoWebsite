@@ -1,4 +1,5 @@
-const canvas = document.getElementById('canvas');
+
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         
         let shapeA = [];
@@ -15,8 +16,8 @@ const canvas = document.getElementById('canvas');
         
         // Generate random shapes
         function generateShapes() {
-            shapeA = generateRandomShape(200, 300, 100, 12);
-            shapeB = generateRandomShape(500, 300, 80, 10);
+            shapeA = generateRandomShape(200, 300, 100, 5);
+            shapeB = generateRandomShape(500, 300, 80, 7);
             resetAnimation();
             draw();
         }
@@ -126,7 +127,7 @@ const canvas = document.getElementById('canvas');
                 // Draw distance text
                 const midX = (currentP.x + closest.point.x) / 2;
                 const midY = (currentP.y + closest.point.y) / 2;
-                ctx.fillStyle = '#ffffff';
+                ctx.fillStyle = '#000000ff';
                 ctx.font = '14px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText(closest.distance.toFixed(1), midX, midY - 10);
@@ -211,12 +212,12 @@ const canvas = document.getElementById('canvas');
                 updateInfo();
                 
                 animationState.currentPoint++;
-                setTimeout(animate, 1000); // 1 second delay between steps
+                setTimeout(animate, 3000); // 1 second delay between steps
             } else if (animationState.direction === 'AtoB') {
                 // Switch to B to A
                 animationState.direction = 'BtoA';
                 animationState.currentPoint = 0;
-                setTimeout(animate, 2000); // 2 second pause between directions
+                setTimeout(animate, 4000); // 2 second pause between directions
             } else {
                 // Animation complete
                 animationState.hausdorffDistance = Math.max(animationState.maxDistanceAtoB, animationState.maxDistanceBtoA);
