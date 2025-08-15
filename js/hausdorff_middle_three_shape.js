@@ -219,7 +219,7 @@ class HausdorffMiddleThreeShapesDemo {
             this.alpha2 = this.computeOptimalAlpha();   
             this.alpha3 = this.computeOptimalAlpha();
             // Update the triangular slider values
-            this.triangularSlider.setValues(this.alpha1, this.alpha2, this.alpha3);
+            this.triangularSlider.setValues(this.alpha1, this.alpha2, this.alpha3, false);
             // Update the display
             document.getElementById('valueA').innerText = this.alpha1.toFixed(3);
             document.getElementById('valueB').innerText = this.alpha2.toFixed(3);
@@ -376,7 +376,7 @@ class HausdorffMiddleThreeShapesDemo {
                 low = mid;
             }
         }
-        
+        console.log(`Optimal alpha found: ${optimalAlpha}`);
         return Math.max(optimalAlpha, 0.2); // Minimum for visualization
     }
 

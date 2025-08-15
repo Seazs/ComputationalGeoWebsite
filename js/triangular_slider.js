@@ -208,20 +208,33 @@ class TriangularSlider {
             }
             
             // Méthode publique pour définir les valeurs programmatiquement
-            setValues(a, b, c) {
-                // Normaliser les valeurs
-                const sum = a + b + c;
-                a = a / sum;
-                b = b / sum;
-                c = c / sum;
+            setValues(a, b, c, normalize = true) {
+                if (normalize) {
+                    // Normalize only when using the slider (default behavior)
+                    const sum = a + b + c;
+                    a = a / sum;
+                    b = b / sum;
+                    c = c / sum;
+                }
                 
-                // Convertir en coordonnées cartésiennes
+                // Convert to cartesian coordinates
                 const cartesian = this.barycentricToCartesian(a, b, c);
                 this.cursorX = cartesian.x;
                 this.cursorY = cartesian.y;
+
+                console.log(`Setting values: a=${a}, b=${b}, c=${c}`);
                 
-                this.updatePosition();
-                this.updateValues();
+                // Update display
+                this.valueA.textContent = a.toFixed(2);
+                this.valueB.textContent = b.toFixed(2);
+                this.valueC.textContent = c.toFixed(2);
+                this.sum.textContent = (a + b + c).toFixed(2);
+                
+                // Trigger event with the actual values
+                const event = new CustomEvent('triangularSliderChange', {
+                    detail: { a, b, c }
+                });
+                document.dispatchEvent(event);
             }
             
             barycentricToCartesian(a, b, c) {

@@ -81,7 +81,7 @@ fetch('navbar.html')
                         <li>Select Shape B and place it on canvas</li>
                         <li>Select Shape C and place it on canvas</li>
                         <li>Click "Compute T<sub>α</sub>" to see the middle shape</li>
-                        <li>Use the optimal α value or use the <strong>Triangular slider</strong></li>
+                        <li>Use the optimal α values or use the <strong>Triangular slider</strong> to see the different results</li>
                     </ol>
                 </div>
                 <canvas id="canvas" width="800" height="600"></canvas>
@@ -92,6 +92,10 @@ fetch('navbar.html')
                             </p>
                             <p>
                                 For each shape, the program computes the Minkowski sum with a disk of radius proportional to its α value. The intersection of these three expanded shapes produces the middle shape T<sub>α</sub>. The triangular slider is implemented using barycentric coordinates: moving the cursor inside the triangle updates the α values in real time, and the visualization responds instantly.
+                            </p>
+                            <br>
+                            <p>
+                                <strong>How are optimal α values computed?</strong> The paper's method works by finding the smallest possible α value where all three expanded shapes have a non-empty intersection. Think of it like inflating each shape with a circle of radius α - if α is too small, the inflated shapes won't intersect at all. If α is too large, the intersection will be unnecessarily big. The optimal α is the smallest value that makes the shapes just barely touch in their intersection. For three convex shapes, this optimal α is theoretically bounded by approximately 0.6068 times the maximum pairwise Hausdorff distance between the shapes.
                             </p>
                             <p>
                                 This practical implementation combines geometric algorithms for Minkowski sums and set intersection with an interactive triangular slider, allowing you to experiment with the concept of the Hausdorff middle for three shapes and see how the result changes as you adjust the α values.
@@ -156,6 +160,10 @@ fetch('navbar.html')
                             <div class="value-number" id="valueC">0.33</div>
                         </div>
                     </div>
+                    <p class="note">
+                        <strong>Note:</strong> According to the paper, the optimal solution has equal α values (α₁ = α₂ = α₃).
+                        The custom mode lets you experiment with different values, but may not produce mathematically optimal results.
+                    </p>
 
                     <!-- add a buton to set alphas value to the optimal one -->
                     <button class="action-btn" id="set-optimal-alphas">Set Optimal Alphas</button>
