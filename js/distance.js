@@ -212,12 +212,12 @@
                 updateInfo();
                 
                 animationState.currentPoint++;
-                setTimeout(animate, 3000); // 1 second delay between steps
+                setTimeout(animate, 2500); // 1 second delay between steps
             } else if (animationState.direction === 'AtoB') {
                 // Switch to B to A
                 animationState.direction = 'BtoA';
                 animationState.currentPoint = 0;
-                setTimeout(animate, 4000); // 2 second pause between directions
+                setTimeout(animate, 2500); // 2 second pause between directions
             } else {
                 // Animation complete
                 animationState.hausdorffDistance = Math.max(animationState.maxDistanceAtoB, animationState.maxDistanceBtoA);
