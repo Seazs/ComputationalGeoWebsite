@@ -87,13 +87,24 @@ fetch('navbar.html')
             That needs to be performed two times to get the undirected distance.</p>
         
         <h4>2) ATALLAH algorithm</h4>
-        <a href="attalah_algo.html">Attalah</a>
+        <a href="attalah_algo.html">Attalah's algorithm</a> explained in details. 
+        <p>A big improvement is the ATALLAH algorithm. It runs in O(n+m) time, which is a significant improvement over the brute force method. This is the one demonstrated in the demo. 
+            The main advancement of this algorithm is to check only the vertices, especially by finding the closest vertex of one shape compared to the other. 
+        </p>
         
-      <!-- <p><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js"></script></p>
+        <h4>3) Divide and conquer</h4>
+        <p>One advancement is the use of Voronoï patterns described in "THE HAUSDORFF VORONOI DIAGRAM OF POLYGONAL OBJECTS: A DIVIDE AND CONQUER APPROACH". It allows to filter the candidates points in a logarithmic way, enabling a complexity of O((n + m) log(n + m)) by using a divide and conquer approach. </p>
+        
+        <h4>4) Other applications</h4>
+        <p>Beyond these main improvements, there has been many improvements over the calculation methods for different applications, for example an <a href="https://doi.org/10.1016/j.patcog.2021.107989">optimized GPU solution</a> or <a href="https://www-sciencedirect-com.ezproxy.ulb.ac.be/science/article/pii/S2352711024001158with"> CUDA</a> , or for calculation of distance <a href = "https://pmc.ncbi.nlm.nih.gov/articles/PMC10961591/">between convex sets</a> defined by algebric expressions.</p>
+
+        
+
+        <!-- <p><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js"></script></p>
       <p><script src="../js/concept_1.js"></script><p> -->
     </div>
         <header>
-            <h1> Demo </h1>
+            <h1> Demo : Hausdorf distance, Attalah's algorithm</h1>
         </header>
 
 
