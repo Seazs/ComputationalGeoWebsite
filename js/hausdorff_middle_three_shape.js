@@ -52,8 +52,6 @@ class HausdorffMiddleThreeShapesDemo {
             this.alpha1 = e.detail.a;
             this.alpha2 = e.detail.b;
             this.alpha3 = e.detail.c;
-            // logging the values for debugging
-            //console.log(`Alpha1: ${this.alpha1}, Alpha2: ${this.alpha2}, Alpha3: ${this.alpha3}`);
             if (this.showMiddle) {
                 this.render();
             }
@@ -376,7 +374,6 @@ class HausdorffMiddleThreeShapesDemo {
                 low = mid;
             }
         }
-        console.log(`Optimal alpha found: ${optimalAlpha}`);
         return Math.max(optimalAlpha, 0.2); // Minimum for visualization
     }
 

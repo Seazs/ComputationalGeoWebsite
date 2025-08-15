@@ -222,7 +222,6 @@ class TriangularSlider {
                 this.cursorX = cartesian.x;
                 this.cursorY = cartesian.y;
 
-                console.log(`Setting values: a=${a}, b=${b}, c=${c}`);
                 
                 // Update display
                 this.valueA.textContent = a.toFixed(2);
