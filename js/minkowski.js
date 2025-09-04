@@ -63,7 +63,6 @@ class MinkowskiSumDemo {
 
     createShape(type, centerX, centerY) {
         // Copy this method from js/main.js
-        // ...existing code...
         const size = 80;
         const points = [];
         switch (type) {
